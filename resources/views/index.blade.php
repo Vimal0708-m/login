@@ -25,7 +25,7 @@
                                     <div class="card-body p-4 p-lg-5 text-black">
 
                                         <form action="{{ route('login.check') }}" method="post">
-
+                                            @csrf
                                             <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your
                                                 account</h5>
 

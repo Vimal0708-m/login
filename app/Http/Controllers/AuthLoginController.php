@@ -85,24 +85,52 @@ class AuthLoginController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(auth_login $auth_login)
+    public function edit()
     {
-        //
+        $user=auth_login::find(session('user_id'));
+        if(!$user) {
+            return redirect()->route('login')->with('error','please login first');
+        }
+        return view('edit',['user'=>$user]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, auth_login $auth_login)
+    public function update(Request $request)
     {
-        //
+        $user = auth_login::find(session('user_id'));
+
+        $request->validate([
+            'name' => 'required|string|min:3',
+            'email' => 'required|email|unique:auth_logins,email,' . $user->id,
+            'password' => 'nullable|min:6'
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Profile Updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(auth_login $auth_login)
-    {
-        //
-    }
+    // public function destroy()
+    // {
+    //     $user = auth_login::find(session('user_id'));
+
+    //     $user->delete();
+
+    //     session()->forget(['user_id', 'user_name']);
+
+    //     return redirect()->route('index')->with('success', 'Account deleted');
+    // }
 }

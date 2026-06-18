@@ -15,4 +15,6 @@ Route::get('/dashboard', [AuthLoginController::class, 'dashboard'])
     ->name('dashboard');
 Route::get('/logout', [AuthLoginController::class, 'logout'])
     ->name('logout');
-
+Route::get('/profile/edit', [AuthLoginController::class,'edit'])->name('profile.edit');
+Route::put('/profile/update', [AuthLoginController::class,'update'] )->name('profile.update');
+// Route::delete('/profile/destroy', [AuthLoginController::class,'destroy'] )->name('profile.destroy');
